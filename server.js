@@ -5,11 +5,13 @@ const fs = require("fs");
 const app = express();
 var PORT = process.env.PORT || 9000;
 const mainDir = path.join(__dirname, "/public");
+// const newDB = JSON.parse(fs.readFileSync("./Develop/db/db.json", "utf-8"))
 
 app.use(express.static('pubic'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
+//GET routes 
 app.get("/notes", function(req, res){
     res.sendFile(path.join(mainDir, "notes.html"));
 
@@ -25,7 +27,7 @@ app.get("*", function(req, res){
     res.sendFile(path.join(mainDir, "index.html"));
 
 });
-
+// POST routes 
 app.post("/api/notes", function(req, res) {
     let createdNotes = JSON.parse(fs.readFileSync("./Develop/db/db.json", "utf8"));
     let newNote = req.body;
@@ -37,7 +39,7 @@ app.post("/api/notes", function(req, res) {
     console.log("Note saved to db.json File as: ", newNote);
     res.json(createdNotes);
 })
-
+//DELETE routes 
 app.delete("/api/notes/:id", function(req, res){
     let createdNotes = JSON.parse(fs.readFileSync(".Develop/db/db.json", "utf8"));
     let noteId = req.params.id;
